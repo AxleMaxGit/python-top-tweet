@@ -173,16 +173,41 @@ def edit_prompt(fname):
 
 def show_tweet_options():
 	print("\nSELECT AN OPTION\n")
+	print('[r]Retweet')
+	print('[s]Switch account')
+	print('[p]Pop Browser')
+	print("[n] New search")
 
-	print("Select tweet number to RT")
-	print("[n] Next search")
 	# 4: Set RT threshold
 	print("")
 
-
-def tweet_prompt():
+def tweet_action_prompt():
 	sort_most_rt = sorted(top_retweets.iteritems(), key=lambda (k,v): (v,k))
+	show_top_rt(top_retweets)
 	show_tweet_options()
+	rt = raw_input(": ")
+	if rt == 'r':
+		post_retweet()
+	elif rt == 's':
+		#placeholder coee for testing code
+		print("SWITCH ACCOUNTS")
+		tweet_action_prompt()
+	elif rt == 'p':
+		#placeholder coee for testing code
+		print("POP BROWSER")
+		tweet_action_prompt()
+	elif rt == 'n':	
+		#placeholder coee for testing code
+		print("NEW SEARCH")
+		search_prompt(fname)
+	else:
+		os.system('clear')
+		tweet_action_prompt()
+
+
+def post_retweet():
+	sort_most_rt = sorted(top_retweets.iteritems(), key=lambda (k,v): (v,k))
+	print("Enter the tweet number to RT. [x] to return")
 	rt = raw_input(": ")
 	#test if the input is an integer
 	try:
@@ -192,47 +217,20 @@ def tweet_prompt():
 			#<NEED CODE HERE FOR RT> RT the selected tweet
 			api.retweet(sort_most_rt[int(rt)][0])
 			print("RT posted by <insert @account-name>")
-			#print(sort_most_rt[int(rt)])
-			tweet_prompt()
+			post_retweet()
 		else:
 			#make sure the tweet is in range 
 			print("out of numeric range")
-			tweet_prompt()
+			post_retweet()
 	except ValueError:
 		#allow user to terminate
-		if rt == 'n':
+		if rt == 'x':
 			os.system('clear')
-			search_prompt(fname)
+			tweet_action_prompt()
 		#prompt user to select number of tweet to RT
 		else:
-			print("Please select a number")
-			tweet_prompt()
-	
-# def usr_post_rt():
-# 	rt = raw_input("RT # ?? ")
-# 	#test if the input is an integer
-# 	try:
-# 		int(rt)
-# 	except ValueError:
-# 		#allow user to terminate
-# 		if rt == 'x':
-# 			os.system('clear')
-# 			pass
-# 		#prompt user to select number of tweet to RT
-# 		else:
-# 			print("Please select a number")
-# 			usr_post_rt()
-# 	else:
-# 		#RT the selected tweet
-# 		if 0 <= int(rt) <= len(sort_most_rt):
-# 			#<NEED CODE HERE FOR RT> RT the selected tweet
-# 			api.retweet(sort_most_rt[int(rt)][0])
-# 			#print(sort_most_rt[int(rt)])
-# 			usr_post_rt()
-# 		else:
-# 			#make sure the tweet is in range 
-# 			print("out of numeric range")
-# 			usr_post_rt()
+			print("Please select a tweet number")
+			post_retweet()
 
 def search_tally(search_item1):
 	#print(search_item1)
@@ -246,7 +244,7 @@ def search_tally(search_item1):
 	#DISPLAY RESULTS
 	show_top_rt(top_retweets)
 	#allow the user to post selected retweets
-	tweet_prompt()
+	tweet_action_prompt()
 
 
 #MAIN
@@ -279,6 +277,7 @@ search_prompt(fname)
 
 
 # webbrowser.open("http://www.google.com.au")
+
 
 
 

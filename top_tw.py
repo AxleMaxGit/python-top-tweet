@@ -7,6 +7,10 @@ import datetime
 #Twitter API ackage
 import tweepy
 
+#Python method for opening browser
+import webbrowser
+
+
 #Auth to Twitter
 auth = tweepy.OAuthHandler('fCT6csJua6NcI7GZoWpTyeIoK', 'QmNviZzpTZMYBS4JZcVtyckddSaeUpjhG0HUyvIwKgaHupTnis')
 auth.set_access_token('2474914111-eRhcmxIfi2o5SWCJjc5LVE2Tl0FnhHFD0KktIIC', 'ZvcPcWsHPa5H03CIzZ6UJq9r1d1sFjIV7coOZG4Q0WCVv')
@@ -181,6 +185,38 @@ def show_tweet_options():
 	# 4: Set RT threshold
 	print("")
 
+def pop_url():
+	sort_most_rt = sorted(top_retweets.iteritems(), key=lambda (k,v): (v,k))
+	#Prompt for tweet number to pop
+	print("Enter tweet number to pop:   [x] to exit.")
+	pop_no = raw_input(": ")
+	#pop url
+	try:
+		int(pop_no)
+		#RT the selected tweet
+		if 0 <= int(pop_no) <= len(sort_most_rt):
+			#<NEED CODE HERE FOR Extracting the URL>
+			#!!!!!!!!!!!!!
+			#pop the browser
+			webbrowser.open("http://www.google.com.au")
+			pop_url()
+		else:
+			#make sure the tweet is in range 
+			print("out of numeric range")
+			pop_url()
+	except ValueError:
+		#allow user to terminate
+		if pop_no == 'x':
+			os.system('clear')
+			show_top_rt(top_retweets)
+			show_tweet_options() 
+			post_retweet()
+		#prompt user to select number of tweet to RT
+		else:
+			print("Please select a tweet number")
+			pop_url()
+	
+
 def tweet_action_prompt():
 	sort_most_rt = sorted(top_retweets.iteritems(), key=lambda (k,v): (v,k))
 	show_top_rt(top_retweets)
@@ -193,8 +229,7 @@ def tweet_action_prompt():
 		print("SWITCH ACCOUNTS")
 		tweet_action_prompt()
 	elif rt == 'p':
-		#placeholder coee for testing code
-		print("POP BROWSER")
+		pop_url()
 		tweet_action_prompt()
 	elif rt == 'n':	
 		#placeholder coee for testing code
@@ -206,7 +241,7 @@ def tweet_action_prompt():
 
 
 def post_retweet():
-	sort_most_rt = sorted(top_retweets.iteritems(), key=lambda (k,v): (v,k))
+	tsort_most_rt = sorted(top_retweets.iteritems(), key=lambda (k,v): (v,k))
 	print("Enter the tweet number to RT. [x] to return")
 	rt = raw_input(": ")
 	#test if the input is an integer
@@ -246,7 +281,6 @@ def search_tally(search_item1):
 	#allow the user to post selected retweets
 	tweet_action_prompt()
 
-
 #MAIN
 #dictionary to store popular tweets
 top_retweets = {}
@@ -262,32 +296,4 @@ from easy_file import *
 fname = "workfile.txt"
 
 search_prompt(fname)
-
-	
-# def count_top_rt(tet):
-# 	for tweet in tweet_set:
-# 		print(tweet)
-
-# tweet_set = ["Sydney", "London", "Paris"]
-# count_top_rt(tweet_set)
-
-# Method to list key and value of list
-# for k,v in enumerate(tweet_set):  
-# 	print(str(k+1) + ": " + v)
-
-
-# webbrowser.open("http://www.google.com.au")
-
-
-
-
-
-
-
-
-
-
-
-
-
 
